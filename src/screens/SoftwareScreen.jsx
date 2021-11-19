@@ -1,24 +1,112 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 export default function SoftwareScreen(props) {
   const { software } = props.route.params;
 
-  const SoftwareJsx = software
-    .sort((s1, s2) => s1.name.localeCompare(s2.name))
-    .map((s) => <Picker.Item label={s.name} value={s.id} />);
+  const softwareJsx = software
+    .sort((c1, c2) => c1.name.localeCompare(c2.name))
+    .map((s) => <Picker.Item key={s.id} label={s.name} value={s.id} />);
 
-  const [value, setValue] = useState([]);
+  const [softwares, setSoftware] = useState([]);
+  const [shortcut, setShortcut] = useState([]);
   console.log(software);
 
+  const shortcutJsx = shortcut.map((s) => (
+    <View key={s.id} style={styles.blocContainer}>
+      <Text style={styles.selectedTitle}>{s.title}</Text>
+      <Text style={styles.selectedCat}>{s.software.name}</Text>
+      <View style={styles.selected}>
+        {s.categories.map((c) => (
+          <Text key={c.id} style={styles.categorie}>
+            {c.name}
+          </Text>
+        ))}
+      </View>
+    </View>
+  ));
+
   return (
-    <View>
-      <Text>Rechercher par logiciel: </Text>
-      <Picker selectedValue={value} onValueChange={(v) => setValue(v)}>
-        <Picker.item label="Logiciel" value="" color="grey" />
-        {SoftwareJsx}
-      </Picker>
+    <View style={styles.container}>
+      <Text style={styles.title}>Rechercher par logiciel :</Text>
+      <ScrollView style={styles.selector}>
+        <Picker
+          selectedValue={softwares}
+          onValueChange={function (itemValue, itemIndex) {
+            fetch(process.env.API_URL + "shortcuts?categories.id=" + itemValue)
+              .then((response) => response.json())
+              .then((data) => setShortcut(data["hydra:member"]))
+              .catch((error) => console.log(error));
+            setSoftware(itemValue);
+          }}
+          mode="dropdown"
+        >
+          <Picker.Item
+            label="Choisir un logiciel"
+            value="Ici l'affichage des raccourcis"
+          />
+          {softwareJsx}
+        </Picker>
+        <View>{shortcutJsx}</View>
+      </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    backgroundColor: "antiquewhite",
+    justifyContent: "space-around",
+    flex: 1,
+  },
+  blocContainer: {
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 400,
+    textAlign: "center",
+    marginBottom: 5,
+    margin: 5,
+  },
+  title: {
+    fontSize: 25,
+  },
+  selected: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  selectedCat: {
+    backgroundColor: "gold",
+    color: "white",
+    width: 180,
+    borderRadius: 5,
+    marginHorizontal: 5,
+    padding: 5,
+    fontSize: 16,
+    fontWeight: 500,
+    textAlign: "center",
+  },
+  selectedTitle: {
+    textAlign: "center",
+    marginBottom: 20,
+    fontWeight: 600,
+    fontSize: 18,
+  },
+  categorie: {
+    backgroundColor: "cornflowerblue",
+    color: "white",
+    width: 180,
+    borderRadius: 5,
+    padding: 5,
+    marginVertical: 10,
+    marginHorizontal: 5,
+    fontSize: 16,
+    fontWeight: 500,
+    textAlign: "center",
+  },
+  selector: {
+    marginBottom: 10,
+    marginTop: 30,
+  },
+});

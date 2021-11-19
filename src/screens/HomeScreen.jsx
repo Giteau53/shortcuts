@@ -1,10 +1,11 @@
+import { Button } from "native-base";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export default function HomeScreen(props) {
   const [categories, setCategories] = useState([]);
   const [software, setSoftware] = useState([]);
-  const [shortcuts, setShortcuts] = useState([]);
+  const [shortcuts, Setshorcuts] = useState([]);
 
   useEffect(() => {
     fetch(process.env.API_URL + "categories")
@@ -16,37 +17,34 @@ export default function HomeScreen(props) {
       .then((response) => response.json())
       .then((data) => setSoftware(data["hydra:member"]))
       .catch((error) => console.log(error));
-
-    fetch(process.env.API_URL + "shortcuts")
-      .then((response) => response.json())
-      .then((data) => setShortcuts(data["hydra:member"]))
-      .catch((error) => console.log(error));
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Rechercher par :</Text>
-      <TouchableOpacity
-        onPress={() =>
-          props.navigation.navigate("Category", {
-            categories: categories,
-          })
-        }
-        style={styles.little_btn}
-      >
-        <Text>Catégorie</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() =>
-          props.navigation.navigate("Software", {
-            software: software,
-          })
-        }
-        style={styles.little_btn}
-      >
-        <Text>Logiciel</Text>
-      </TouchableOpacity>
-      <Text>Ou bien :</Text>
+      <Text style={styles.title}> Rechercher par :</Text>
+      <View style={styles.button}>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate("Category", {
+              categories: categories,
+            })
+          }
+          style={styles.littleBtn}
+        >
+          <Text style={styles.btnTitle}>Catégorie</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate("Software", {
+              software: software,
+            })
+          }
+          style={styles.littleBtn}
+        >
+          <Text style={styles.btnTitle}>Logiciel</Text>
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.title}>Ou bien :</Text>
 
       <TouchableOpacity
         onPress={() =>
@@ -54,9 +52,9 @@ export default function HomeScreen(props) {
             shortcuts: shortcuts,
           })
         }
-        style={styles.little_btn}
+        style={styles.littleBtn}
       >
-        <Text>Ajouter un raccourci</Text>
+        <Text style={styles.btnShortcuts}>Ajouter un raccourci</Text>
       </TouchableOpacity>
     </View>
   );
@@ -65,21 +63,31 @@ export default function HomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    backgroundColor: "antiquewhite",
+    justifyContent: "space-around",
+    flex: 1,
   },
-  little_btn: {
-    textAlign: "center",
-    paddingBottom: 20,
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
-    width: 200,
-    marginBottom: 20,
-    marginTop: 20,
-    marginLeft: 30,
 
-    borderColor: "blue",
-    borderWidth: 1,
-    backgroundColor: "grey",
-    borderRadius: 5,
+  title: {
+    fontSize: 25,
+  },
+  button: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  littleBtn: {
+    backgroundColor: "dodgerblue",
+    borderRadius: 30,
+    padding: 20,
+    textAlign: "center",
+    margin: 15,
+  },
+  btnTitle: {
+    color: "white",
+    fontSize: 18,
+  },
+  btnShortcuts: {
+    color: "white",
+    fontSize: 18,
   },
 });

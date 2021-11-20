@@ -10,6 +10,7 @@ import { Picker } from "@react-native-picker/picker";
 
 export default function CategoryScreen(props) {
   const { categories } = props.route.params;
+  const { shortcuts } = props.route.params;
 
   const categoriesJsx = categories
     .sort((c1, c2) => c1.name.localeCompare(c2.name))
@@ -17,11 +18,12 @@ export default function CategoryScreen(props) {
 
   const [category, setCategory] = useState([]);
   const [shortcut, setShortcut] = useState([]);
-  console.log(categories);
 
   const shortcutJsx = shortcut.map((s) => (
     <TouchableOpacity
-      onPress={() => props.navigation.navigate("Detail :", { shortcut: s })}
+      onPress={() =>
+        props.navigation.navigate("Details", { details: shortcuts })
+      }
     >
       <View key={s.id} style={styles.blocContainer}>
         <Text style={styles.selectedTitle}>{s.title}</Text>
@@ -36,8 +38,6 @@ export default function CategoryScreen(props) {
       </View>
     </TouchableOpacity>
   ));
-
-  console.log(shortcutJsx);
 
   return (
     <View style={styles.container}>
@@ -55,10 +55,7 @@ export default function CategoryScreen(props) {
           mode="dropdown"
           style={styles.selector}
         >
-          <Picker.Item
-            label="Choisir une catégorie"
-            value="Ici l'affichage des raccourcis"
-          />
+          <Picker.Item label="catégorie" value="affichage des raccourcis" />
           {categoriesJsx}
         </Picker>
         <View>{shortcutJsx}</View>
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   selector: {
-    marginBottom: 10,
+    marginBottom: 30,
     marginTop: 30,
   },
 });

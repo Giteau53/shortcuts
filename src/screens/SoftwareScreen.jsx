@@ -11,7 +11,6 @@ export default function SoftwareScreen(props) {
 
   const [softwares, setSoftware] = useState([]);
   const [shortcut, setShortcut] = useState([]);
-  console.log(software);
 
   const shortcutJsx = shortcut.map((s) => (
     <View key={s.id} style={styles.blocContainer}>
@@ -34,7 +33,7 @@ export default function SoftwareScreen(props) {
         <Picker
           selectedValue={softwares}
           onValueChange={function (itemValue, itemIndex) {
-            fetch(process.env.API_URL + "shortcuts?categories.id=" + itemValue)
+            fetch(process.env.API_URL + "shortcuts?software.id=" + itemValue)
               .then((response) => response.json())
               .then((data) => setShortcut(data["hydra:member"]))
               .catch((error) => console.log(error));
@@ -42,10 +41,7 @@ export default function SoftwareScreen(props) {
           }}
           mode="dropdown"
         >
-          <Picker.Item
-            label="Choisir un logiciel"
-            value="Ici l'affichage des raccourcis"
-          />
+          <Picker.Item label="logiciel" value="affichage des raccourcis" />
           {softwareJsx}
         </Picker>
         <View>{shortcutJsx}</View>
@@ -106,7 +102,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   selector: {
-    marginBottom: 10,
+    marginBottom: 30,
     marginTop: 30,
   },
 });

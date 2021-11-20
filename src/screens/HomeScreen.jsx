@@ -1,11 +1,10 @@
-import { Button } from "native-base";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export default function HomeScreen(props) {
   const [categories, setCategories] = useState([]);
   const [software, setSoftware] = useState([]);
-  const [shortcuts, Setshorcuts] = useState([]);
+  const [shortcuts] = useState([]);
 
   useEffect(() => {
     fetch(process.env.API_URL + "categories")

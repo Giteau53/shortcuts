@@ -17,18 +17,34 @@ export default function DetailsScreen(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{details.title} </Text>
-      <View>
+      <View style={styles.categories}>
         {details.categories.map((c) => (
           <Text key={c.id} style={styles.cat}>
             {c.name}
           </Text>
         ))}
+        <Text style={styles.software}>{details.software.name}</Text>
       </View>
-      <Text style={styles.plateform}> Windows {details.windows} </Text>
-      <Text style={styles.plateform}> Mac {details.macos} </Text>
-      <Text style={styles.plateform}> Linux {details.linux} </Text>
-      <Text> Contexte {details.context} </Text>
-      <Text> Description : {details.description}</Text>
+
+      <Text style={styles.plateform}>
+        {" "}
+        Windows
+        <Text style={styles.text}> {details.windows} </Text>
+      </Text>
+      <Text style={styles.plateform}>
+        {" "}
+        Mac
+        <Text style={styles.text}> {details.macos} </Text>
+      </Text>
+      <Text style={styles.plateform}>
+        {" "}
+        Linux
+        <Text style={styles.text}> {details.linux} </Text>
+      </Text>
+      <Text style={styles.nomCat}> Contexte : </Text>
+      <Text style={styles.text}>{details.context} </Text>
+      <Text style={styles.nomCat}> Description : </Text>
+      <Text style={styles.text}>{details.description}</Text>
     </View>
   );
 }
@@ -36,16 +52,17 @@ export default function DetailsScreen(props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-
     backgroundColor: "antiquewhite",
+    textAlign: "center",
   },
   title: {
     fontSize: 20,
+    marginBottom: 30,
   },
   cat: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "gold",
+    backgroundColor: "cornflowerblue",
     color: "white",
     width: 180,
     borderRadius: 5,
@@ -56,7 +73,30 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   plateform: {
-    fontStyle: "bold",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  software: {
+    display: "flex",
+    flexDirection: "row",
+    textAlign: "center",
+    backgroundColor: "gold",
+    color: "white",
+    width: 180,
+    borderRadius: 5,
+    marginBottom: 10,
+    padding: 5,
+    fontSize: 16,
+  },
+  categories: {
+    display: "flex",
+    flexDirection: 1,
+  },
+  text: {
     fontSize: 15,
+  },
+  nomCat: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

@@ -1,24 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 export default function ShortcutsScreen(props) {
-  const { categoriesJsx } = props.route.params;
-  const { softwareJsx } = props.route.params;
+  const { categories } = props.route.params;
+  const [shortcut, setShortcut] = useState([]);
 
-  const softwaresJsx = softwareJsx
-    .sort((s1, s2) => s1.name.localeCompare(s2.name))
-    .map((s) => <Picker.Item key={s.id} label={s.name} value={s.id} />);
-
-  const categorieJsx = categoriesJsx
-    .sort((c1, c2) => c1.name.localeCompare(c2.name))
-    .map((s) => <Picker.Item key={s.id} label={s.name} value={s.id} />);
+  const shortcutJsx = shortcut.map((s) => (
+    <View key={s.id}>
+      <Text>{s.title}</Text>
+      <Text>{s.software.name}</Text>
+      <View>
+        {categories.map((c) => (
+          <Text key={c.id}>{c.name}</Text>
+        ))}
+      </View>
+    </View>
+  ));
 
   return (
     <View>
-      <Text>Ajouter un raccourci :</Text>
-      <Text>Logiciel</Text>
-      {categorieJsx} {softwaresJsx}
-      <Text>Catégories</Text>
+      <ScrollView>
+        <Picker
+          selectedValue={categories}
+          onValueChange={function (itemValue, itemIndex) {
+            fetch(process.env.API_URL + "shortcuts?categories.id=" + itemValue)
+              .then((response) => response.json())
+              .then((data) => setShortcut(data["hydra:member"]))
+              .catch((error) => console.log(error));
+            setCategory(itemValue);
+          }}
+          mode="dropdown"
+        >
+          <Picker.Item label="catégorie" value="affichage des raccourcis" />
+          {categoriesJsx}
+        </Picker>
+        <Text>{shortcutJsx}</Text>
+      </ScrollView>
     </View>
   );
 }

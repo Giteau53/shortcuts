@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 export default function SoftwareScreen(props) {
@@ -13,17 +19,21 @@ export default function SoftwareScreen(props) {
   const [shortcut, setShortcut] = useState([]);
 
   const shortcutJsx = shortcut.map((s) => (
-    <View key={s.id} style={styles.blocContainer}>
-      <Text style={styles.selectedTitle}>{s.title}</Text>
-      <Text style={styles.selectedCat}>{s.software.name}</Text>
-      <View style={styles.selected}>
-        {s.categories.map((c) => (
-          <Text key={c.id} style={styles.categorie}>
-            {c.name}
-          </Text>
-        ))}
+    <TouchableOpacity
+      onPress={() => props.navigation.navigate("Details", { details: s })}
+    >
+      <View key={s.id} style={styles.blocContainer}>
+        <Text style={styles.selectedTitle}>{s.title}</Text>
+        <Text style={styles.selectedCat}>{s.software.name}</Text>
+        <View style={styles.selected}>
+          {s.categories.map((c) => (
+            <Text key={c.id} style={styles.categorie}>
+              {c.name}
+            </Text>
+          ))}
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   ));
 
   return (

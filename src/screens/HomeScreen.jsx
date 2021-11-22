@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 export default function HomeScreen(props) {
   const [categories, setCategories] = useState([]);
   const [software, setSoftware] = useState([]);
-  const [shortcuts] = useState([]);
+  const [shortcuts, setShortcuts] = useState([]);
 
   useEffect(() => {
     fetch(process.env.API_URL + "categories")

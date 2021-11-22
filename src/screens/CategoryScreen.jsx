@@ -10,7 +10,6 @@ import { Picker } from "@react-native-picker/picker";
 
 export default function CategoryScreen(props) {
   const { categories } = props.route.params;
-  const { shortcuts } = props.route.params;
 
   const categoriesJsx = categories
     .sort((c1, c2) => c1.name.localeCompare(c2.name))
@@ -21,9 +20,7 @@ export default function CategoryScreen(props) {
 
   const shortcutJsx = shortcut.map((s) => (
     <TouchableOpacity
-      onPress={() =>
-        props.navigation.navigate("Details", { details: shortcuts })
-      }
+      onPress={() => props.navigation.navigate("Details", { details: s })}
     >
       <View key={s.id} style={styles.blocContainer}>
         <Text style={styles.selectedTitle}>{s.title}</Text>
